@@ -13,5 +13,10 @@ namespace IntranetIPScanner
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            // Specify the way to exit from the application.
+            this.ShutdownMode = ShutdownMode.OnMainWindowClose;
+        }
     }
 }

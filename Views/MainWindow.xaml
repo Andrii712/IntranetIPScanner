@@ -1,0 +1,123 @@
+﻿<Window x:Class="IntranetIPScanner.Views.MainWindow"
+        x:Name="IPScannerMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IntranetIPScanner.ViewModels"
+        mc:Ignorable="d"
+        Title="Intranet IP Scanner" 
+
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen">
+    <Window.Background>
+        <SolidColorBrush Color="{DynamicResource ResourceKey=WindowColor}" />
+    </Window.Background>
+
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+
+    <Grid x:Name="MainGrig" Margin="5" ShowGridLines="False">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Name="col0" Width="5" />
+            <ColumnDefinition Name="col1" Width="auto" />
+            <ColumnDefinition Name="col2" Width="5" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Name="row0" Height="auto" />
+            <RowDefinition Name="row1" Height="auto" />
+            <RowDefinition Name="row2" Height="auto" />
+        </Grid.RowDefinitions>
+
+        <Border x:Name="Controls1Border"
+                Grid.Column="1" Grid.Row="0" Grid.RowSpan="1"
+                Style="{DynamicResource ResourceKey=BorderCommonStyle}">
+            <Grid x:Name="Controls" Grid.Column="1" Grid.Row="0" Grid.RowSpan="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <DockPanel Grid.Column="1" Grid.Row="0" Margin="5, 5, 5, 2">
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                        <Label Content="IP Range:" Style="{DynamicResource ResourceKey=LabelCommonStyle}"
+                               Target="{Binding ElementName=IPRangeStartTextBox}" />
+
+                        <TextBox x:Name="IPRangeStartTextBox" Style="{DynamicResource ResourceKey=TextBoxCommonStyle}"
+                                 Text="{Binding Path=IPRangeStart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 Width="100" />
+
+                        <Label Content="to" Style="{DynamicResource ResourceKey=LabelCommonStyle}"
+                               Target="{Binding ElementName=IPRangeEndTextBox}"/>
+
+                        <TextBox x:Name="IPRangeEndTextBox" Style="{DynamicResource ResourceKey=TextBoxCommonStyle}"
+                                 Text="{Binding Path=IPRangeEnd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 Width="100" />
+                    </StackPanel>
+
+                    <Button x:Name="PreferencesButtton"
+                            DockPanel.Dock="Right"
+                            Content="Preferences"
+                            Grid.Column="1" Grid.Row="0"
+                            Style="{DynamicResource ResourceKey=ButtonCommonStyle}"
+                            HorizontalAlignment="Right"/>
+                </DockPanel>
+
+                <DockPanel Grid.Column="1" Grid.Row="1" Margin="5,2,5,5">
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                        <Label Content="Hostname" Style="{DynamicResource ResourceKey=LabelCommonStyle}"
+                       Target="{Binding ElementName=HostnameTextBox}"/>
+
+                        <TextBox x:Name="HostnameTextBox" Style="{DynamicResource ResourceKey=TextBoxCommonStyle}"
+                         Text="{Binding Path=Hostname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Width="120"/>
+                    </StackPanel>
+
+                    <Button x:Name="StartButton" 
+                            DockPanel.Dock="Right"
+                            Content="Start"
+                            Command="{Binding Path=Start}"
+                            Grid.Column="1" Grid.Row="1"
+                            Style="{DynamicResource ResourceKey=ButtonCommonStyle}"
+                            HorizontalAlignment="Right"/>
+                </DockPanel>
+            </Grid>
+        </Border>
+
+        <Border x:Name="IPAddressesListBorder" 
+                Grid.Column="1" Grid.Row="2"
+                Style="{DynamicResource ResourceKey=BorderCommonStyle}">
+            <ListView x:Name="IPAddressesListView"
+                     ItemsSource="{Binding Path=IPAddressesList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                     HorizontalAlignment="Stretch" 
+                     Margin="5" MinHeight="150"
+                     SelectionMode="Single">
+                
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="120">
+                            <GridViewColumn.Header>
+                                <TextBlock Text="IP Address" FontWeight="DemiBold" />
+                            </GridViewColumn.Header>
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding Path=IPAddress, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                             IsReadOnly="True"
+                                             Style="{DynamicResource ResourceKey=TextBoxCommonStyle}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Border>
+
+    </Grid>
+</Window>
